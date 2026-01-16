@@ -61,4 +61,6 @@ func ShowDataByCategory(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf(fmt.Sprintf("ID: %d, TItle: %s, Category: %s, Read Count: %d\n", d.ID, d.Title, d.Category, d.ReadCount))
 		data = append(data, d)
 	}
+
+	fmt.Println("Successful data show")
 }
