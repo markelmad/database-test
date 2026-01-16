@@ -26,10 +26,11 @@ func DeleteRowByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	row, err := db.Query("SELECT id FROM shakespeare_work WHERE id = ?", id)
-	defer row.Close()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	defer row.Close()
+
 	if !row.Next() {
 		w.Write([]byte(fmt.Sprintf("Item with an ID of %d doesn't exist. No item has been deleted.\n", id)))
 		fmt.Printf("Item with an ID of %d doesn't exist. No item has been deleted.\n", id)
@@ -37,10 +38,11 @@ func DeleteRowByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	stmt, err := db.Prepare("DELETE FROM shakespeare_work WHERE (`id` = ?)")
-	defer stmt.Close()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	defer stmt.Close()
+
 	_, err = stmt.Exec(id)
 	if err != nil {
 		log.Fatal(err.Error())
