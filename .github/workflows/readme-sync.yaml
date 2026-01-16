@@ -1,0 +1,23 @@
+name: Sync OpenAPI to ReadMe
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  sync_to_readme:
+    # check for successful merge. will avoid tiggering when closing a PR (declined/cancelled PR) without merge.
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # sync OAS JSON file to readme.io
+      - name: Sync OpenAPI to Readme docs
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi ./docs/oas3.json --key=${{ secrets.README_API_KEY }} --id=${{ secrets.README_API_DEFINITION_ID }}
